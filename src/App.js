@@ -1,36 +1,39 @@
 // src/App.js
 import React, { useState } from 'react';
-import { states } from 'knowindia';
+import { states, uts, India } from 'knowindia';
 import './App.css';
 
 function App() {
-  const [selectedState, setSelectedState] = useState('');
-  const [stateDetails, setStateDetails] = useState(null);
+  const [selectedPlace, setSelectedPlace] = useState('');
+  const [placeDetails, setPlaceDetails] = useState(null);
 
   const allStates = states();
-  const stateNames = Object.values(allStates).map(state => state.name);
+  const allUTs = uts();
+  const allPlaces = { ...allStates, ...allUTs };
+  const placeNames = Object.values(allPlaces).map(place => place.name);
 
-  const handleStateChange = (event) => {
-    const stateName = event.target.value;
-    setSelectedState(stateName);
-    const stateCode = Object.keys(allStates).find(
-      code => allStates[code].name === stateName
+  const handlePlaceChange = (event) => {
+    const placeName = event.target.value;
+    setSelectedPlace(placeName);
+    const placeCode = Object.keys(allPlaces).find(
+      code => allPlaces[code].name === placeName
     );
-    setStateDetails(allStates[stateCode]);
+    setPlaceDetails(allPlaces[placeCode]);
   };
 
   return (
     <div className="App">
-      <h1>Know India - React Demo</h1>
-      <div>
-        <label htmlFor="state">Select State:</label>
+      <h1 className="title">Explore India - States and Union Territories</h1>
+      <div className="dropdown-container">
+        <label htmlFor="place">Select a State/UT:</label>
         <select
-          id="state"
-          value={selectedState}
-          onChange={handleStateChange}
+          id="place"
+          className="dropdown"
+          value={selectedPlace}
+          onChange={handlePlaceChange}
         >
-          <option value="">--Select a State--</option>
-          {stateNames.map((name) => (
+          <option value="">--Select a Place--</option>
+          {placeNames.map((name) => (
             <option key={name} value={name}>
               {name}
             </option>
@@ -38,39 +41,39 @@ function App() {
         </select>
       </div>
 
-      {stateDetails && (
-        <div>
-          <h2>Details for {stateDetails.name}</h2>
-          <p><strong>Capital:</strong> {stateDetails.capital}</p>
-          <p><strong>Area:</strong> {stateDetails.area}</p>
-          <p><strong>Population:</strong> {stateDetails.population}</p>
-          <p><strong>Official Languages:</strong> {stateDetails.officialLanguages.join(', ')}</p>
-          <p><strong>Literacy Rate:</strong> {stateDetails.literacyRate}</p>
-          <p><strong>State Animal:</strong> {stateDetails.stateAnimal}</p>
-          <p><strong>State Bird:</strong> {stateDetails.stateBird}</p>
-          <p><strong>State Flower:</strong> {stateDetails.stateFlower}</p>
-          <p><strong>State Tree:</strong> {stateDetails.stateTree}</p>
+      {placeDetails && (
+        <div className="place-details">
+          <h2>Details for {placeDetails.name}</h2>
+          <p><strong>Capital:</strong> {placeDetails.capital}</p>
+          <p><strong>Area:</strong> {placeDetails.area}</p>
+          <p><strong>Population:</strong> {placeDetails.population}</p>
+          <p><strong>Official Languages:</strong> {placeDetails.officialLanguages.join(', ')}</p>
+          <p><strong>Literacy Rate:</strong> {placeDetails.literacyRate}</p>
+          <p><strong>State Animal:</strong> {placeDetails.stateAnimal}</p>
+          <p><strong>State Bird:</strong> {placeDetails.stateBird}</p>
+          <p><strong>State Flower:</strong> {placeDetails.stateFlower}</p>
+          <p><strong>State Tree:</strong> {placeDetails.stateTree}</p>
           <h3>Famous For</h3>
           <ul>
-            {stateDetails.famousFor.map((item, index) => (
+            {placeDetails.famousFor.map((item, index) => (
               <li key={index}>{item}</li>
             ))}
           </ul>
           <h3>Festivals</h3>
           <ul>
-            {stateDetails.festivals.map((festival, index) => (
+            {placeDetails.festivals.map((festival, index) => (
               <li key={index}>{festival}</li>
             ))}
           </ul>
           <h3>Cuisine</h3>
           <ul>
-            {stateDetails.cuisine.map((dish, index) => (
+            {placeDetails.cuisine.map((dish, index) => (
               <li key={index}>{dish}</li>
             ))}
           </ul>
           <h3>Tourist Attractions</h3>
           <ul>
-            {stateDetails.touristAttractions.map((attraction, index) => (
+            {placeDetails.touristAttractions.map((attraction, index) => (
               <li key={index}>
                 {attraction.name} ({attraction.type})
               </li>
